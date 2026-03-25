@@ -1,0 +1,26 @@
+# Django
+db.sqlite3
+**/db.sqlite3
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+.venv/
+venv/
+
+# IDE
+.vscode/
+.idea/
+
+# Media uploads / datasets / generated scans (keep only required weights)
+media/*
+!media/weights/
+!media/weights/model.pt
+!media/weights/*.pt
+
+# Performance charts generated dynamically at runtime
+Assets/Static/Performance/*_recent.png
+

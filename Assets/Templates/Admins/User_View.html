@@ -1,0 +1,45 @@
+{% extends 'Admins/AdminHome.html' %}
+{% block contents %}
+<style>
+
+</style>
+<div class="glass-panel mt-4">
+    <div class="custom_heading-container mb-4">
+        <h2>Registered Neuro-Users</h2>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-dark table-hover" style="background: transparent;">
+            <thead>
+                <tr style="color: var(--cyber-cyan); border-bottom: 2px solid var(--glass-border);">
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Username</th>
+                    <th>Address</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody style="color: var(--medical-white);">
+                {% for data in users %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ data.Name }}</td>
+                    <td>{{ data.Username }}</td>
+                    <td>{{ data.Address }}</td>
+                    <td>
+                        <a href="{% url 'ActivateUser' data.id %}" class="btn-cyber btn-cyber-sm {% if data.Status == 'Active' %}btn-green{% else %}btn-orange{% endif %}">
+                            <i class="fas {% if data.Status == 'Active' %}fa-check-circle{% else %}fa-exclamation-circle{% endif %}"></i> {{ data.Status }}
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{%url 'DeleteUser' data.id %}" class="btn-cyber btn-cyber-sm btn-orange">
+                            <i class="fas fa-trash-alt"></i> Delete
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

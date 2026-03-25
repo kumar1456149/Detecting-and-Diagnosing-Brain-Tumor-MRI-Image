@@ -1,0 +1,154 @@
+{% extends 'Base.html' %}
+{% load static %}
+{% block side_image %}{% static 'Images/brain_mri_tech_bg.png' %}{% endblock %}
+{% block image_class %}img-signup{% endblock %}
+{% block contents %}
+<style>
+  .signup-container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 50px;
+    background: rgba(0, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    border-radius: 25px;
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.1);
+    animation: slideIn 0.8s ease-out;
+  }
+
+  .signup-container h2 {
+    color: #00ffff;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 40px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    animation: glow 2s infinite alternate;
+  }
+
+  /* Styling Django form fields */
+  .signup-container input, 
+  .signup-container textarea, 
+  .signup-container select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 10px 0;
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid transparent;
+    border-radius: 12px;
+    color: #0a192f;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    outline: none;
+  }
+
+  .signup-container input:focus {
+    border-color: #00ffff;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+    transform: translateY(-2px);
+  }
+
+  .signup-container .btn-row {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .signup-btn {
+    background: #00ffff;
+    color: #0a192f;
+    padding: 12px 40px;
+    border: none;
+    border-radius: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 5px 15px rgba(0, 255, 255, 0.3);
+  }
+
+  .signup-btn:hover {
+    transform: scale(1.05);
+    background: #00e6e6;
+    box-shadow: 0 8px 20px rgba(0, 255, 255, 0.5);
+  }
+
+  .reset-btn-custom {
+    background: transparent;
+    color: #00ffff;
+    border: 2px solid #00ffff;
+    padding: 12px 40px;
+    border-radius: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .reset-btn-custom:hover {
+    background: rgba(0, 255, 255, 0.1);
+    color: #fff;
+    border-color: #fff;
+  }
+
+  .alert {
+    background: rgba(255, 77, 77, 0.1);
+    border: 1px solid #ff4d4d;
+    color: #ff4d4d;
+    border-radius: 10px;
+    margin-top: 15px;
+  }
+</style>
+
+<div class="signup-container">
+  <h2>Neuro-Registration</h2>
+  
+  <form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    <div class="row">
+      <div class="col-md-6">{{form.Name}}</div>
+      <div class="col-md-6">{{form.Mobile}}</div>
+    </div>
+    
+    <div class="row">
+      <div class="col-md-6">{{form.Email}}</div>
+      <div class="col-md-6">{{form.Username}}</div>
+    </div>
+    
+    <div class="row">
+      <div class="col-md-6">{{form.Password}}</div>
+      <div class="col-md-6">{{form.Address}}</div>
+    </div>
+    
+    <div style="display:none;">
+      {{form.Status}}
+    </div>
+
+    {% if form.errors %}
+    <div class="alert alert-danger" role="alert">
+      {% for field in form %}
+        {% for error in field.errors %}
+          {{ error }}<br>
+        {% endfor %}
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% for mes in messages %}
+    <div class="alert alert-{% if mes.tags == 'success' %}success{% else %}danger{% endif %}" role="alert">
+      {{mes}}
+    </div>
+    {% endfor %}
+
+    <div class="btn-row">
+      <button type="submit" class="btn-cyber btn-cyan">
+        <i class="fas fa-user-plus"></i> SignUp
+      </button>
+      <button type="reset" class="btn-cyber btn-cyber-reset">
+        <i class="fas fa-undo"></i> Reset
+      </button>
+    </div>
+  </form>
+</div>
+
+{% endblock %}

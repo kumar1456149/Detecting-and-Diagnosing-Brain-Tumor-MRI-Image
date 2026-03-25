@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Global Reports Management | ADMIN</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'Css/bootstrap.css' %}" />
+    <link href="{% static 'Css/style.css' %}" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        :root {
+            --cyber-cyan: #64ffda;
+            --neon-green: #39ff14;
+            --neon-red: #ff3e3e;
+            --glass-bg: rgba(10, 25, 47, 0.85);
+            --glass-border: rgba(100, 255, 218, 0.15);
+            --medical-white: #e6f1ff;
+        }
+
+        body {
+            background: url("{% static 'Images/admin_dashboard_bg.png' %}") no-repeat center center fixed;
+            background-size: cover;
+            color: var(--medical-white);
+        }
+
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .report-strip {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            border-left: 4px solid var(--cyber-cyan);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .report-strip:hover {
+            background: rgba(255, 255, 255, 0.06);
+            transform: translateX(10px);
+            border-left-width: 8px;
+        }
+
+        .btn-cyber-outline {
+            border: 1px solid var(--cyber-cyan);
+            color: var(--cyber-cyan);
+            padding: 5px 15px;
+            border-radius: 5px;
+            text-decoration: none !important;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+        }
+
+        .btn-cyber-outline:hover {
+            background: var(--cyber-cyan);
+            color: #0a192f;
+            box-shadow: 0 0 15px var(--cyber-cyan);
+        }
+
+        .btn-dash {
+            border: 2px solid var(--cyber-cyan);
+            color: var(--cyber-cyan);
+            padding: 8px 25px;
+            border-radius: 5px;
+            text-decoration: none !important;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .btn-dash:hover {
+            background: var(--cyber-cyan);
+            color: #0a192f;
+            box-shadow: 0 0 25px var(--cyber-cyan);
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <div class="glass-panel p-5">
+            <div class="d-flex justify-content-between align-items-center mb-5">
+                <h2 style="color: var(--cyber-cyan); margin: 0; text-transform: uppercase; letter-spacing: 2px;">
+                    <i class="fas fa-file-medical-alt me-2"></i> Global Report Repository
+                </h2>
+                <a href="{% url 'AdminHome' %}" class="btn-dash">
+                    <i class="fas fa-th me-1"></i> Matrix Dashboard
+                </a>
+            </div>
+
+            <div class="reports-list mt-4">
+                {% for scan in scans %}
+                <div class="report-strip d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+                        <div class="report-icon me-4" style="font-size: 2rem; color: var(--cyber-cyan);">
+                            <i class="fas fa-file-pdf"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-1" style="color: #fff;">SCAN-REP-{{ scan.id }}</h5>
+                            <p class="mb-0 text-muted" style="font-size: 0.85rem;">
+                                Patient Neural Node: <span style="color: var(--cyber-cyan);">{{ scan.user.Name }}</span> | 
+                                Diagnostic: <span style="--result-color: {% if 'Tumor' in scan.result %}var(--neon-red){% else %}var(--neon-green){% endif %}; color: var(--result-color);">{{ scan.result }}</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="actions">
+                        <a href="{% url 'download_report' scan.id %}" class="btn-cyber-outline">
+                            <i class="fas fa-download me-1"></i> Retrieve Log
+                        </a>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="text-center py-5">
+                    <i class="fas fa-folder-open fa-4x text-muted mb-3 opacity-25"></i>
+                    <h5 class="text-muted text-uppercase">The global report neural buffer is empty.</h5>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

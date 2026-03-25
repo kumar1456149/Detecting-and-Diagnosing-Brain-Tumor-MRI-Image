@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <!-- Basic -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <!-- Site Metas -->
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <title>MRI Brain Tumor Detection|ADMIN PAGE</title>
+
+    <!-- slider stylesheet -->
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.1.3/assets/owl.carousel.min.css" />
+
+    <!-- bootstrap core css -->
+    <link rel="stylesheet" type="text/css" href="{%static 'Css/bootstrap.css' %}" />
+
+    <!-- fonts style -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Poppins:400,700|Roboto:400,700&display=swap"
+        rel="stylesheet" />
+
+    <!-- Custom styles for this template -->
+    <link href="{% static 'Css/style.css' %}" rel="stylesheet" />
+    <!-- responsive style -->
+    <link href="{% static 'Css/responsive.css' %}" rel="stylesheet" />
+    <style>
+        /* Force Cyber Theme */
+        .btn-cyber {
+            position: relative !important;
+            padding: 12px 24px !important;
+            background: rgba(10, 25, 47, 0.9) !important;
+            color: #64ffda !important;
+            border: 2px solid #64ffda !important;
+            border-radius: 10px !important;
+            font-weight: 700 !important;
+            text-transform: uppercase !important;
+            letter-spacing: 1.5px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 10px !important;
+            text-decoration: none !important;
+            margin: 0 10px !important;
+            transition: all 0.4s ease !important;
+            animation: floating 4s ease-in-out infinite !important;
+        }
+
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .btn-cyber:hover {
+            transform: translateY(-3px) scale(1.05) !important;
+            box-shadow: 0 0 25px #64ffda !important;
+            background: rgba(10, 25, 47, 1) !important;
+            color: #fff !important;
+            text-decoration: none !important;
+        }
+
+        .btn-cyan { border-color: #64ffda !important; color: #64ffda !important; }
+        .btn-purple { border-color: #bc13fe !important; color: #bc13fe !important; }
+        .btn-green { border-color: #39ff14 !important; color: #39ff14 !important; }
+        .btn-orange { border-color: #ff5e00 !important; color: #ff5e00 !important; }
+        
+        .navbar-nav .nav-link:hover { text-decoration: none !important; }
+    </style>
+    <style>
+        body {
+            background-image: url("{% static 'Images/admin_dashboard_bg.png' %}");
+            background-size: cover;
+            background-attachment: fixed;
+        }
+        .main-container {
+            padding: 20px;
+            margin-top: 30px;
+        }
+        .glass-panel {
+            background: rgba(10, 25, 47, 0.7);
+            backdrop-filter: blur(15px);
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid rgba(100, 255, 218, 0.2);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            animation: fadeIn 1s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .table-cyber {
+            color: #fff !important;
+            border-collapse: separate;
+            border-spacing: 0 10px;
+        }
+        .table-cyber thead th {
+            color: #64ffda;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: none;
+            padding: 15px;
+        }
+        .table-cyber tbody tr {
+            background: rgba(100, 255, 218, 0.05);
+            transition: all 0.3s;
+        }
+        .table-cyber tbody tr:hover {
+            background: rgba(100, 255, 218, 0.15);
+            transform: scale(1.01);
+        }
+        .table-cyber td {
+            border: none;
+            padding: 15px;
+            vertical-align: middle;
+        }
+        .btn-cyber-sm {
+            padding: 5px 12px !important;
+            font-size: 12px !important;
+        }
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .status-active { background: rgba(57, 255, 20, 0.2); color: #39ff14; border: 1px solid #39ff14; }
+        .status-waiting { background: rgba(255, 94, 0, 0.2); color: #ff5e00; border: 1px solid #ff5e00; }
+
+        /* Admin Dashboard Grid */
+        .admin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .admin-card {
+            background: rgba(10, 25, 47, 0.7);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(100, 255, 218, 0.2);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-decoration: none !important;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 4px solid transparent;
+        }
+
+        .admin-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            border-color: rgba(100, 255, 218, 0.5);
+        }
+
+        .admin-card i {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: block;
+            transition: transform 0.4s;
+        }
+
+        .admin-card:hover i {
+            transform: scale(1.2) rotate(5deg);
+        }
+
+        .admin-card h5 {
+            color: #fff;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .admin-card p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        /* Color Variations */
+        .card-cyan { border-bottom-color: #64ffda !important; color: #64ffda !important; }
+        .card-purple { border-bottom-color: #bc13fe !important; color: #bc13fe !important; }
+        .card-green { border-bottom-color: #39ff14 !important; color: #39ff14 !important; }
+        .card-orange { border-bottom-color: #ff5e00 !important; color: #ff5e00 !important; }
+        .card-red { border-bottom-color: #ff3e3e !important; color: #ff3e3e !important; }
+
+        .shadow-cyan:hover { box-shadow: 0 0 30px rgba(100, 255, 218, 0.3) !important; }
+        .shadow-purple:hover { box-shadow: 0 0 30px rgba(188, 19, 254, 0.3) !important; }
+        .shadow-green:hover { box-shadow: 0 0 30px rgba(57, 255, 20, 0.3) !important; }
+    </style>
+</head>
+
+<body>
+
+    <div class="hero_area">
+        <!-- header section strats -->
+        <header class="header_section">
+            <div class="container-fluid">
+                <nav class="navbar navbar-expand custom_nav-container pt-3">
+                    <a class="navbar-brand" href="{% url 'AdminHome' %}">
+                        <img src="{% static 'Images/logo.png' %}" alt="" />
+                        <span>
+                            Mri Brain Tumor Detection
+                        </span>
+                    </a>
+                    <div class="navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav ml-auto align-items-center">
+                            <li class="nav-item">
+                                <a href="{% url 'home'%}" class="btn-cyber btn-cyan">
+                                    <i class="fas fa-home"></i> Home
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{% url 'AdminHome'%}" class="btn-cyber btn-purple">
+                                    <i class="fas fa-users"></i> Users Matrix
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{% url 'home' %}" class="btn-cyber btn-orange">
+                                    <i class="fas fa-sign-out-alt"></i> SignOut
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </header>
+    </div>
+    <div class="main-container">
+        <div class="container-fluid">
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert" style="background: rgba(100, 255, 218, 0.1); color: #64ffda; border: 1px solid #64ffda;">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% endfor %}
+            {% endif %}
+
+            <div class="glass-panel">
+                {% block contents %}
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 style="color: #64ffda; text-transform: uppercase; letter-spacing: 2px; margin: 0;">
+                        <i class="fas fa-shield-alt"></i> Admin Command Center
+                    </h2>
+                    <div class="stats-mini d-flex gap-3">
+                        <span class="badge status-active p-2">Users: {{ total_users }}</span>
+                        <span class="badge status-waiting p-2">Scans: {{ total_scans }}</span>
+                    </div>
+                </div>
+
+                <div class="admin-grid mb-5">
+                    <a href="#user-matrix" class="admin-card card-cyan shadow-cyan">
+                        <i class="fas fa-users-cog"></i>
+                        <h5>User Management</h5>
+                        <p>Control Neural Matrix Connectivity</p>
+                    </a>
+                    <a href="{% url 'AdminScanHistory' %}" class="admin-card card-purple shadow-purple">
+                        <i class="fas fa-database"></i>
+                        <h5>Scan & Data</h5>
+                        <p>System-Wide MRI Archives</p>
+                    </a>
+                    <a href="{% url 'AdminAnalytics' %}" class="admin-card card-green shadow-green">
+                        <i class="fas fa-chart-pie"></i>
+                        <h5>Analytics</h5>
+                        <p>Neuro-Detection Distribution</p>
+                    </a>
+                    <a href="{% url 'AdminReports' %}" class="admin-card card-orange">
+                        <i class="fas fa-file-invoice-medical"></i>
+                        <h5>Reports</h5>
+                        <p>Global Diagnostic Access</p>
+                    </a>
+                    <a href="#" class="admin-card card-red">
+                        <i class="fas fa-cogs"></i>
+                        <h5>System Controls</h5>
+                        <p>Neural Network Maintenance</p>
+                    </a>
+                </div>
+
+                <div id="user-matrix" class="mt-5 pt-5 border-top border-secondary">
+                    <h3 class="mb-4" style="color: #64ffda; letter-spacing: 1px;">
+                        <i class="fas fa-users"></i> User Neural Matrix
+                    </h3>
+                    <div class="table-responsive">
+                        <table class="table table-cyber">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Mobile</th>
+                                    <th>Email</th>
+                                    <th>Username</th>
+                                    <th>Password</th>
+                                    <th>Address</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for u in users %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ u.Name }}</td>
+                                    <td>{{ u.Mobile }}</td>
+                                    <td style="font-size: 13px;">{{ u.Email }}</td>
+                                    <td><code style="color: #64ffda;">{{ u.Username }}</code></td>
+                                    <td><span style="filter: blur(3px);" onmouseover="this.style.filter='none'" onmouseout="this.style.filter='blur(3px)'">{{ u.Password }}</span></td>
+                                    <td style="max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ u.Address }}</td>
+                                    <td>
+                                        <span class="status-badge {% if u.Status == 'active' or u.Status == 'Active' %}status-active{% else %}status-waiting{% endif %}">
+                                            {{ u.Status }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex" style="gap: 10px;">
+                                            {% if u.Status == 'waiting' or u.Status == 'Waiting' %}
+                                            <a href="{% url 'ActivateUser' u.id %}" class="btn-cyber btn-green btn-cyber-sm" title="Activate">
+                                                <i class="fas fa-power-off"></i> Activate
+                                            </a>
+                                            {% endif %}
+                                            <a href="{% url 'Edit_User' u.id %}" class="btn-cyber btn-cyan btn-cyber-sm" title="Edit">
+                                                <i class="fas fa-edit"></i> Edit
+                                            </a>
+                                            <a href="{% url 'DeleteUser' u.id %}" class="btn-cyber btn-orange btn-cyber-sm" title="Delete" onclick="return confirm('Disconnect this user from neural network?')">
+                                                <i class="fas fa-trash"></i> Delete
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="9" class="text-center text-muted">No neural connections found.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

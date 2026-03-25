@@ -1,0 +1,129 @@
+{% extends 'Users/UserHome.html' %}
+{% block contents %}
+{% load static %}
+
+<div class="container py-4">
+    <div class="glass-panel p-4">
+        <div class="d-flex justify-content-between align-items-center mb-5">
+            <h2 style="color: var(--cyber-cyan); margin: 0;">
+                <i class="fas fa-file-medical-alt me-2"></i> Diagnostic Reports & Analysis
+            </h2>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-outline-info btn-sm">
+                        <i class="fas fa-filter"></i> Filter
+                    </button>
+                    <button class="btn btn-cyber-sm btn-cyan">
+                        <i class="fas fa-download"></i> Bulk Download
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            {% for scan in scans %}
+            <div class="col-md-6 mb-4">
+                <div class="report-card p-4 rounded h-100 {% if 'No Tumor' in scan.result %}border-healthy{% else %}border-tumor{% endif %}" style="background: rgba(10, 25, 47, 0.6); border: 1px solid var(--glass-border);">
+                    <div class="d-flex justify-content-between align-items-start mb-3 border-bottom border-secondary pb-3">
+                        <div>
+                            <h5 class="mb-1" style="color: var(--medical-white);">Report #SCAN-{{ scan.id }}</h5>
+                            <span class="text-muted small" style="letter-spacing: 0.5px;"><i class="fas fa-clock"></i> {{ scan.timestamp|date:"M d, Y h:i A" }}</span>
+                        </div>
+                        <div class="text-end">
+                            <span class="badge {% if 'No Tumor' in scan.result %}bg-success{% else %}bg-danger{% endif %} text-uppercase p-2" style="font-size: 0.75rem;">
+                                {{ scan.result }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="row align-items-center mb-3">
+                        <!-- Patient Scan Image -->
+                        <div class="col-4">
+                            <div class="img-box rounded bg-dark border border-secondary text-center" style="height: 90px; overflow: hidden; position: relative;">
+                                <img src="{{ scan.image.url }}" class="img-fluid" style="object-fit: cover; width: 100%; height: 100%;" alt="Patient Scan Image">
+                                <div style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.6); font-size: 0.6rem; color: #fff;">SCAN IMAGE</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Stats -->
+                        <div class="col-8">
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between small mb-1">
+                                    <span class="text-muted">Prediction Probability</span>
+                                    <span style="color: var(--cyber-cyan); font-weight: bold;">{{ scan.accuracy }}%</span>
+                                </div>
+                                <div class="progress" style="height: 6px; background: rgba(255,255,255,0.05);">
+                                    <div class="progress-bar bg-cyber-cyan" style="--progress: {{ scan.accuracy }}%; width: var(--progress);"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between align-items-center small">
+                                <span class="text-muted">Model Confidence</span>
+                                <span class="badge border border-info text-info bg-transparent">HIGH LEVEL</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Short Summary -->
+                    <div class="mb-3 p-2 rounded" style="--border-color: {% if 'No Tumor' in scan.result %}var(--neon-green){% else %}#ff3e3e{% endif %}; background: rgba(255, 255, 255, 0.03); border-left: 3px solid var(--border-color);">
+                        <p class="small mb-0" style="color: var(--slate); line-height: 1.4;">
+                            <strong style="color: var(--medical-white);">Summary:</strong> 
+                            {% if 'No Tumor' in scan.result %}
+                                AI detected no anomalies. Routine follow-up is suggested.
+                            {% else %}
+                                Anomalies detected indicative of a tumor. Specialist review recommended.
+                            {% endif %}
+                        </p>
+                    </div>
+
+                    <div class="mt-auto pt-3 border-top border-secondary d-flex justify-content-between align-items-center">
+                        <span style="color: var(--slate); font-size: 0.8rem;">Format: DIGITAL PDF</span>
+                        <a href="{% url 'download_report' scan.id %}" target="_blank" class="btn-cyber btn-cyber-sm btn-orange" style="margin: 0 !important; font-size: 0.7rem; padding: 8px 15px !important;">
+                            <i class="fas fa-file-pdf"></i> Download
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-5" style="color: var(--slate);">
+                <i class="fas fa-file-alt fa-3x mb-3 d-block"></i>
+                No diagnostic data available for report generation.
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<style>
+    .report-card {
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .report-card:hover {
+        transform: translateY(-5px);
+        background: rgba(10, 25, 47, 0.8) !important;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        border-color: var(--cyber-cyan) !important;
+    }
+    .badge {
+        font-size: 0.65rem;
+        letter-spacing: 1.5px;
+    }
+    .border-healthy {
+        border-left: 4px solid var(--neon-green) !important;
+    }
+    .border-tumor {
+        border-left: 4px solid #ff3e3e !important;
+    }
+    .bg-cyber-cyan {
+        background-color: var(--cyber-cyan) !important;
+    }
+</style>
+
+{% endblock %}
+
+{% block bottom_navbar %}
+<div class="bottom-navbar">
+    <a href="{% url 'UserHome' %}" class="btn-cyber btn-orange" style="margin: 0 !important; font-size: 1rem; padding: 12px 40px !important;">
+        <i class="fas fa-arrow-left"></i> Back to Dashboard
+    </a>
+</div>
+{% endblock %}

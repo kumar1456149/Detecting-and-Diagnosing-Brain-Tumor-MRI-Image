@@ -1,0 +1,79 @@
+{% extends 'Users/UserHome.html' %}
+{% block contents %}
+{% load static %}
+
+<div class="container py-4">
+    <div class="glass-panel p-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 style="color: var(--cyber-cyan); margin: 0;">
+                <i class="fas fa-percentage me-2"></i> Prediction Probability (Latest Upload)
+            </h2>
+            <span class="badge bg-primary" style="letter-spacing: 1px;">
+                Dynamic
+            </span>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="p-4 rounded shadow-lg" style="background: rgba(10, 25, 47, 0.6); border: 1px solid var(--glass-border);">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span style="color: var(--medical-white); font-weight: 600;">Confidence</span>
+                        <span class="fw-bold" style="color: var(--cyber-cyan); font-size: 1.6rem;">
+                            {% if last_prediction_probability is not None %}{{ last_prediction_probability }}%{% else %}N/A{% endif %}
+                        </span>
+                    </div>
+
+                    <div class="progress mt-3" style="height: 10px; background: rgba(255,255,255,0.05);">
+                        <div class="progress-bar bg-cyber-cyan"
+                             style="--progress: {% if last_prediction_probability is not None %}{{ last_prediction_probability }}{% else %}0{% endif %}%; width: {% if last_prediction_probability is not None %}{{ last_prediction_probability }}{% else %}0{% endif %}%;"></div>
+                    </div>
+
+                    <div class="mt-4">
+                        <div class="d-flex justify-content-between small mb-2">
+                            <span class="text-muted">Latest Result</span>
+                            <span class="fw-bold" style="color: var(--medical-white);">{{ last_prediction_result }}</span>
+                        </div>
+                        <div class="d-flex justify-content-between small mb-0">
+                            <span class="text-muted">Prediction Status</span>
+                            <span class="fw-bold" style="color: var(--medical-white);">{{ last_prediction_status }}</span>
+                        </div>
+                    </div>
+
+                    {% if last_prediction_probability is None %}
+                    <p style="color: rgba(255,255,255,0.65); font-size: 0.9rem; margin-top: 18px;">
+                        Upload a Brain MRI to see dynamic prediction probability.
+                    </p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="p-3 rounded" style="background: rgba(10, 25, 47, 0.6); border: 1px solid var(--glass-border);">
+                    <p class="mb-2" style="color: rgba(255,255,255,0.6); letter-spacing: 1px; font-weight: 600;">
+                        Uploaded MRI
+                    </p>
+                    <div style="border-radius: 12px; overflow: hidden; border: 1px solid rgba(100,255,218,0.25); background: #000;">
+                        {% if last_uploaded_file_url %}
+                            <img src="{{ last_uploaded_file_url }}" class="img-fluid" alt="Latest Uploaded MRI" style="width: 100%; height: 320px; object-fit: contain;">
+                        {% else %}
+                            <div style="height: 320px; display:flex; align-items:center; justify-content:center; color: rgba(255,255,255,0.45);">
+                                Image unavailable
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block bottom_navbar %}
+<div class="bottom-navbar">
+    <a href="{% url 'UserHome' %}" class="btn-cyber btn-orange" style="margin: 0 !important; font-size: 1rem; padding: 12px 40px !important;">
+        <i class="fas fa-arrow-left"></i> Back to Dashboard
+    </a>
+</div>
+{% endblock %}
+

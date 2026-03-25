@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <!-- Basic -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <!-- Site Metas -->
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <title>MRI Brain Tumor Detection| MAIN PAGE</title>
+
+    <!-- slider stylesheet -->
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.1.3/assets/owl.carousel.min.css" />
+
+    <!-- bootstrap core css -->
+    <link rel="stylesheet" type="text/css" href="{%static 'Css/bootstrap.css' %}" />
+
+    <!-- fonts style -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Poppins:400,700|Roboto:400,700&display=swap"
+        rel="stylesheet" />
+
+    <!-- Custom styles for this template -->
+    <link href="{% static 'Css/style.css' %}" rel="stylesheet" />
+    <!-- responsive style -->
+    <link href="{% static 'Css/responsive.css' %}" rel="stylesheet" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <style>
+        /* Force Cyber Theme */
+        .btn-cyber {
+            position: relative !important;
+            padding: 14px 28px !important;
+            background: rgba(10, 25, 47, 0.9) !important;
+            color: #64ffda !important;
+            border: 2px solid #64ffda !important;
+            border-radius: 12px !important;
+            font-weight: 700 !important;
+            text-transform: uppercase !important;
+            letter-spacing: 2px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 12px !important;
+            text-decoration: none !important;
+            margin: 0 15px !important;
+            transition: all 0.4s ease !important;
+            animation: floating 4s ease-in-out infinite !important;
+            box-shadow: 0 0 15px rgba(100, 255, 218, 0.2) !important;
+        }
+
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .btn-cyber:hover {
+            transform: translateY(-5px) scale(1.1) !important;
+            box-shadow: 0 0 30px #64ffda !important;
+            background: rgba(10, 25, 47, 1) !important;
+            color: #fff !important;
+        }
+
+        .btn-cyan { border-color: #64ffda !important; color: #64ffda !important; }
+        .btn-purple { border-color: #bc13fe !important; color: #bc13fe !important; }
+        .btn-green { border-color: #39ff14 !important; color: #39ff14 !important; }
+        .btn-orange { border-color: #ff5e00 !important; color: #ff5e00 !important; }
+
+        .navbar-nav .nav-item {
+            margin: 0 10px !important;
+        }
+        
+        /* Remove Bootstrap Underline */
+        .navbar-nav .nav-link:hover, .btn-cyber:hover {
+            text-decoration: none !important;
+        }
+
+        /* About Section Enhancements */
+        .about_section .detail-box {
+            background: rgba(10, 25, 47, 0.9) !important;
+            backdrop-filter: blur(20px) !important;
+            border: 2px solid #64ffda !important;
+            border-radius: 25px !important;
+            padding: 50px !important;
+            color: #ffffff !important;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.8) !important;
+            margin-top: 20px !important;
+            min-height: 400px !important;
+        }
+
+        .about_section .detail-box h2 {
+            color: #ffffff !important;
+            font-size: 3.5rem !important;
+            font-weight: 800 !important;
+            margin-bottom: 30px !important;
+            text-shadow: 0 0 20px rgba(100, 255, 218, 0.3) !important;
+        }
+
+        .about_section .detail-box p {
+            color: #ffffff !important;
+            font-size: 1.2rem !important;
+            line-height: 1.8 !important;
+        }
+
+        .brain-img-cyber {
+            width: 100% !important;
+            max-width: 800px !important;
+            border: 4px solid #64ffda !important;
+            border-radius: 40px !important;
+            box-shadow: 0 0 50px rgba(100, 255, 218, 0.6) !important;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+            animation: brain-float 4s ease-in-out infinite, brain-glow 2.5s infinite !important;
+        }
+
+        @keyframes brain-float {
+            0% { transform: translateY(0) scale(1) rotate(0deg); }
+            50% { transform: translateY(-20px) scale(1.05) rotate(1deg); }
+            100% { transform: translateY(0) scale(1) rotate(0deg); }
+        }
+
+        @keyframes brain-glow {
+            0% { box-shadow: 0 0 30px rgba(100, 255, 218, 0.4); }
+            50% { box-shadow: 0 0 70px rgba(100, 255, 218, 0.9); }
+            100% { box-shadow: 0 0 30px rgba(100, 255, 218, 0.4); }
+        }
+
+        .brain-img-cyber:hover {
+            transform: scale(1.1) rotate(3deg) !important;
+            box-shadow: 0 0 100px #64ffda !important;
+            z-index: 100 !important;
+        }
+
+        /* AI Image Filters for Entry Pages */
+        .img-user {
+            filter: hue-rotate(-150deg) brightness(1.2) contrast(1.1) !important;
+            box-shadow: 0 0 50px rgba(0, 255, 255, 0.6) !important;
+            border-color: #00ffff !important;
+        }
+
+        .img-signup {
+            filter: brightness(1.1) contrast(1.1) !important;
+            box-shadow: 0 0 50px rgba(100, 255, 218, 0.4) !important;
+            border-color: #64ffda !important;
+        }
+
+        .img-admin {
+            filter: none !important;
+            box-shadow: 0 0 50px rgba(188, 19, 254, 0.6) !important;
+            border-color: #bc13fe !important;
+        }
+
+        /* Adjust detail box for 5-column layout */
+        .about_section .detail-box {
+            padding: 35px !important;
+            min-height: 450px !important;
+        }
+
+        .about_section .detail-box h2 {
+            font-size: 2.8rem !important;
+        }
+
+        .cyber-header-bar {
+            display: flex !important;
+            align-items: center !important;
+            background: rgba(100, 255, 218, 0.15) !important;
+            border-bottom: 2px solid #64ffda !important;
+            padding: 20px 40px !important;
+            margin: -50px -50px 30px -50px !important;
+            border-top-left-radius: 25px !important;
+            border-top-right-radius: 25px !important;
+            position: relative !important;
+            overflow: hidden !important;
+        }
+
+        .cyber-header-bar::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #fff, transparent);
+            animation: scan-line 3s linear infinite;
+        }
+
+        @keyframes scan-line {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .cyber-status-dot {
+            width: 12px;
+            height: 12px;
+            background: #ff3e3e !important;
+            border-radius: 50% !important;
+            margin-right: 15px !important;
+            box-shadow: 0 0 15px #ff3e3e !important;
+            animation: pulse-dot 1.5s infinite !important;
+        }
+
+        @keyframes pulse-dot {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.3); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .cyber-header-bar h2 {
+            margin: 0 !important;
+            font-size: 2.2rem !important;
+            color: #64ffda !important;
+            text-shadow: 0 0 10px rgba(100, 255, 218, 0.5) !important;
+        }
+    </style>
+    <style>
+        body {
+            background-image: url("{% static 'Images/brain_mri_tech_bg.png' %}");
+        }
+        .detail-box {
+            background: rgba(10, 25, 47, 0.7);
+            backdrop-filter: blur(8px);
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid rgba(100, 255, 218, 0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .header_section {
+            background: rgba(10, 25, 47, 0.8);
+            backdrop-filter: blur(5px);
+        }
+        .navbar-brand span {
+            color: var(--cyber-cyan);
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="hero_area">
+        <!-- header section strats -->
+        <header class="header_section">
+          <div class="container-fluid">
+            <nav class="navbar navbar-expand custom_nav-container pt-3">
+              <a class="navbar-brand" href="{% url 'home' %}">
+                <img src="{% static 'Images/logo.png' %}" alt="" />
+                <span style="color: #64ffda !important; text-shadow: 0 0 10px rgba(100, 255, 218, 0.5);">
+                    Mri Brain Tumor Detection
+                </span>
+              </a>
+              <div class="navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto align-items-center">
+                  <li class="nav-item">
+                    <a href="{% url 'home'%}" class="btn-cyber btn-cyan anim-pulse-cyan">
+                        <i class="fas fa-home"></i> Home
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{% url 'adminlogin' %}" class="btn-cyber btn-purple">
+                        <i class="fas fa-user-shield"></i> Admin
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{% url 'UserLogin' %}" class="btn-cyber btn-green">
+                        <i class="fas fa-user-md"></i> User
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{% url 'userlogin' %}" class="btn-cyber btn-orange">
+                        <i class="fas fa-user-plus"></i> Signup
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </nav>
+     </div> 
+     </header>
+     </div>         
+    <section class="about_section layout_padding mt-5">
+        
+        <div class="container">
+            <div class="row align-items-center justify-content-between">
+                <div class="col-md-6 mb-5 mb-md-0">
+                    <div class="img-box d-flex justify-content-center" style="padding-right: 30px;">
+                        <img src="{% block side_image %}{% static 'Images/bri.jpeg'%}{% endblock %}" alt="Brain MRI" class="brain-img-cyber {% block image_class %}{% endblock %}"/>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="detail-box">
+                        {%  block contents %}
+                        <div class="cyber-header-bar">
+                            <div class="cyber-status-dot"></div>
+                            <h2>
+                                Tumor Detection
+                            </h2>
+                        </div>
+
+                        <p>
+                            Largely, brain-based illnesses are prevalent in
+                            society. The main reason brain diseases occur is because of cell
+                            growth. It therefore impacts the brain's regular operation,
+                            which in turn impacts the health of other essential organs'
+                            functionality. Aggressive brain cancer is ultimately the outcome
+                            of cell growth. Early detection of tumors in the brain is one of
+                            the primary strategies to lower the number of fatalities
+                        </p>
+                       {% endblock %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.bundle.min.js"></script>
+    
+</body>
+
+</html>

@@ -1,0 +1,27 @@
+{% extends 'Users/UserHome.html' %}
+{% block contents %}
+<div class="container py-5 text-center">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="glass-panel p-5">
+                <div class="mb-4">
+                    <h2 style="color: var(--cyber-cyan); animation: glow 2s infinite alternate; margin: 0;">Neuro-Model Training Overview</h2>
+                </div>
+                <div class="mt-4">
+                    <p class="lead" style="color: var(--slate);">Model Accuracy Score:</p>
+                    <h1 style="color: var(--cyber-cyan); font-weight: bold; font-size: 5rem; text-shadow: 0 0 20px rgba(100, 255, 218, 0.5); animation: pulse 2s infinite;">{{ acc }}%</h1>
+                    <p class="mt-3" style="color: var(--slate);">The AI model has been successfully trained on the MRI dataset.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block bottom_navbar %}
+<div class="bottom-navbar">
+    <a href="{% url 'UserHome' %}" class="btn-cyber btn-orange" style="margin: 0 !important; font-size: 1rem; padding: 12px 40px !important;">
+        <i class="fas fa-arrow-left"></i> Back to Dashboard
+    </a>
+</div>
+{% endblock %}
