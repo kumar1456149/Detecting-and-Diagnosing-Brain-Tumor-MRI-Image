@@ -50,12 +50,31 @@
                                 <!-- Prediction Confidence -->
                                 <div class="accuracy-meter mt-3">
                                     <div class="d-flex justify-content-between mb-1">
-                                        <span style="color: var(--medical-white); font-size: 0.85rem;">Prediction Probability (Current Image)</span>
-                                        <span class="fw-bold" style="color: var(--cyber-cyan);">{{ prediction_probability }}%</span>
+                                        <span style="color: var(--medical-white); font-size: 0.85rem;">Tumor Confidence (Tumor %)</span>
+                                        <span class="fw-bold" style="color: #ff4d6d;">{{ tumor_probability }}%</span>
                                     </div>
                                     <div class="progress" style="height: 10px; background: rgba(255,255,255,0.05);">
-                                        <div class="progress-bar progress-bar-striped progress-bar-animated {% if status == 'success' %}bg-neon-green{% elif status == 'danger' %}bg-neon-red{% else %}bg-neon-orange{% endif %}" role="progressbar" 
-                                             style="--progress: {{ prediction_probability }}%; width: var(--progress);"></div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-neon-red" role="progressbar"
+                                             style="--progress: {{ tumor_probability }}%; width: var(--progress);"></div>
+                                    </div>
+                                </div>
+
+                                <div class="accuracy-meter mt-3">
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <span style="color: var(--medical-white); font-size: 0.85rem;">Non-Tumor Confidence (Healthy %)</span>
+                                        <span class="fw-bold" style="color: var(--neon-green);">{{ non_tumor_probability }}%</span>
+                                    </div>
+                                    <div class="progress" style="height: 10px; background: rgba(255,255,255,0.05);">
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-neon-green" role="progressbar"
+                                             style="--progress: {{ non_tumor_probability }}%; width: var(--progress);"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Predicted class confidence (kept for backward UI usage) -->
+                                <div class="accuracy-meter mt-3">
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <span style="color: var(--medical-white); font-size: 0.85rem;">Predicted Confidence</span>
+                                        <span class="fw-bold" style="color: var(--cyber-cyan);">{{ prediction_probability }}%</span>
                                     </div>
                                 </div>
 

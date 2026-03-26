@@ -323,7 +323,7 @@ def is_brain_mri_image(image):
     gb_diff = np.mean(np.abs(g_ch - b_ch))
     avg_channel_diff = (rg_diff + rb_diff + gb_diff) / 3.0
 
-    GRAYSCALE_THRESHOLD = 20.0   # pixels must be near-gray
+    GRAYSCALE_THRESHOLD = 20.0  # pixels must be near-gray
     if avg_channel_diff > GRAYSCALE_THRESHOLD:
         return False   # Clearly a colour photo – reject
 
@@ -342,6 +342,12 @@ def is_brain_mri_image(image):
         return False   # Uniformly flat – not a meaningful scan
 
     return True
+
+
+def to_grayscale_3ch(image):
+    """Converts an image to 3-channel grayscale (BGR) for model compatibility."""
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    return cv2.merge([gray, gray, gray])
 
 
 def predict(request):
@@ -368,21 +374,28 @@ def predict(request):
         # ── Brain MRI validation ──────────────────────────────────────────────
         # Reject non-brain images BEFORE running the model
         if not is_brain_mri_image(image):
-            # Keep dashboard "prediction probability" consistent for invalid uploads.
-            request.session['last_prediction_probability'] = 0
-            request.session['last_prediction_result'] = 'Invalid Image'
-            request.session['last_prediction_status'] = 'invalid'
-            request.session['last_uploaded_file_url'] = uploaded_file_url
-            request.session.modified = True
+            # Color MRI exports may fail "near-gray" checks. Try grayscale fallback first.
+            image_gray3 = to_grayscale_3ch(image)
+            if is_brain_mri_image(image_gray3):
+                image = image_gray3
+            else:
+                # Keep dashboard "prediction probability" consistent for invalid uploads.
+                request.session['last_prediction_probability'] = 0
+                request.session['last_prediction_result'] = 'Invalid Image'
+                request.session['last_prediction_status'] = 'invalid'
+                request.session['last_uploaded_file_url'] = uploaded_file_url
+                request.session.modified = True
 
-            return render(request, 'Users/UserPredict.html', {
-                'result': 'Invalid Image',
-                'prediction_probability': 0,
-                'status': 'invalid',
-                'uploaded_file_url': uploaded_file_url,
-                'model_accuracy': 'N/A',
-                'invalid_message': 'The uploaded image does not appear to be a Brain MRI scan. Please upload a valid grayscale brain MRI image.',
-            })
+                return render(request, 'Users/UserPredict.html', {
+                    'result': 'Invalid Image',
+                    'prediction_probability': 0,
+                    'tumor_probability': 0,
+                    'non_tumor_probability': 0,
+                    'status': 'invalid',
+                    'uploaded_file_url': uploaded_file_url,
+                    'model_accuracy': 'N/A',
+                    'invalid_message': 'The uploaded image does not appear to be a Brain MRI scan. Please upload a valid Brain MRI image.',
+                })
         # ─────────────────────────────────────────────────────────────────────
 
         class CNN(nn.Module):
@@ -428,6 +441,9 @@ def predict(request):
             output = model(image_input)
             prob = output.item()
 
+        tumor_probability = round(prob * 100, 2)
+        non_tumor_probability = round((1 - prob) * 100, 2)
+
         # Apply threshold and determine results
         if prob > 0.6:
             result = "Tumor Detected"
@@ -467,6 +483,8 @@ def predict(request):
         return render(request, 'Users/UserPredict.html', {
             'result': result,
             'prediction_probability': prediction_probability,
+            'tumor_probability': tumor_probability,
+            'non_tumor_probability': non_tumor_probability,
             'status': status,
             'uploaded_file_url': uploaded_file_url,
             'model_accuracy': model_accuracy,
