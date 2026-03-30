@@ -50,8 +50,8 @@
                             <!-- View button triggers the modal for this scan -->
                             <button type="button"
                                     class="btn btn-outline-info btn-sm"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#scanModal{{ scan.id }}">
+                                    data-toggle="modal"
+                                    data-target="#scanModal{{ scan.id }}">
                                 <i class="fas fa-eye"></i> View
                             </button>
                         </td>
@@ -66,10 +66,12 @@
                                 <!-- Header -->
                                 <div class="modal-header" style="border-bottom: 1px solid rgba(100,255,218,0.2);">
                                     <h5 class="modal-title" id="scanModalLabel{{ scan.id }}"
-                                        style="color: var(--cyber-cyan);">
-                                        <i class="fas fa-brain me-2"></i> Scan #{{ scan.id }} — Detail View
+                                        style="color: var(--medical-white); text-shadow: 0 0 10px rgba(100,255,218,0.4); font-weight: 600;">
+                                        <i class="fas fa-brain me-2" style="color: var(--cyber-cyan);"></i> Scan #{{ scan.id }} — Detail View
                                     </h5>
-                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="opacity: 1; text-shadow: none;">
+                                        <span aria-hidden="true" style="color: #fff; font-size: 1.8rem;">&times;</span>
+                                    </button>
                                 </div>
 
                                 <!-- Body -->
@@ -78,11 +80,11 @@
 
                                         <!-- Left: full-size scan image -->
                                         <div class="col-md-6 text-center">
-                                            <div style="border: 2px solid rgba(100,255,218,0.3); border-radius: 12px; overflow: hidden; background: #000;">
+                                            <div style="border: 2px solid rgba(100,255,218,0.5); border-radius: 12px; overflow: hidden; background: rgba(0,0,0,0.5); box-shadow: 0 0 20px rgba(100,255,218,0.2); padding: 5px;">
                                                 <img src="{{ scan.image.url }}"
-                                                     class="img-fluid"
+                                                     class="img-fluid rounded"
                                                      alt="Brain MRI Scan"
-                                                     style="max-height: 320px; object-fit: contain; width: 100%;">
+                                                     style="max-height: 400px; object-fit: contain; width: 100%;">
                                             </div>
                                             <p class="mt-2" style="color: rgba(255,255,255,0.4); font-size: 0.75rem;">
                                                 Brain MRI — Scan #{{ scan.id }}
@@ -137,7 +139,7 @@
                                     <a href="{% url 'download_report' scan.id %}" class="btn btn-outline-info btn-sm me-2">
                                         <i class="fas fa-download me-1"></i> Download Report
                                     </a>
-                                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">
+                                    <button type="button" class="btn btn-outline-secondary btn-sm" data-dismiss="modal">
                                         Close
                                     </button>
                                 </div>
@@ -179,7 +181,13 @@
     }
     /* Modal backdrop style */
     .modal-backdrop {
-        --bs-backdrop-opacity: 0.75;
+        --bs-backdrop-opacity: 0.8 !important;
+        background-color: #000;
+        z-index: 104000 !important;
+    }
+    /* Ensure modal shows ABOVE bottom navbar */
+    .modal {
+        z-index: 105000 !important;
     }
 </style>
 

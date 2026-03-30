@@ -9,8 +9,6 @@ import torch
 from torch.utils.data import Dataset, DataLoader
 import glob
 import os
-import matplotlib.pyplot as plt
-from sklearn.metrics import confusion_matrix,  accuracy_score
 import cv2
 import random
 import sys
@@ -18,7 +16,6 @@ import os
 
 import torch.nn as nn
 import torch.nn.functional as F
-import seaborn as  sns
 from django.http import HttpResponse
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
@@ -65,6 +62,9 @@ def UserHome(request):
 
  
 def Traning(request):
+        import matplotlib.pyplot as plt
+        from sklearn.metrics import confusion_matrix, accuracy_score
+        import seaborn as sns
   
         tumor = []
         path = os.path.join(settings.MEDIA_ROOT , 'brain_tumor_dataset' , 'yes' , '*.jpg')
@@ -341,6 +341,28 @@ def is_brain_mri_image(image):
     if std_intensity < 15:
         return False   # Uniformly flat – not a meaningful scan
 
+    # --- Check 3: Dark borders & central brain mass ---
+    # MRI scans typically have a dark background (air) around the skull/brain.
+    thumb_gray = cv2.cvtColor(thumb.astype(np.uint8), cv2.COLOR_BGR2GRAY).astype(np.float32)
+    
+    corner_size = 12
+    top_left = thumb_gray[0:corner_size, 0:corner_size]
+    top_right = thumb_gray[0:corner_size, -corner_size:]
+    bottom_left = thumb_gray[-corner_size:, 0:corner_size]
+    bottom_right = thumb_gray[-corner_size:, -corner_size:]
+    
+    corners_mean = (np.mean(top_left) + np.mean(top_right) + np.mean(bottom_left) + np.mean(bottom_right)) / 4.0
+    
+    # Check center (32x32 area in the middle of 64x64 thumbnail)
+    center_region = thumb_gray[16:48, 16:48]
+    center_mean = np.mean(center_region)
+    
+    if corners_mean > 85:
+        return False   # Borders are too bright (regular photos have background)
+        
+    if center_mean < corners_mean + 15:
+        return False   # Center should be noticeably brighter than the corners
+
     return True
 
 
@@ -374,28 +396,23 @@ def predict(request):
         # ── Brain MRI validation ──────────────────────────────────────────────
         # Reject non-brain images BEFORE running the model
         if not is_brain_mri_image(image):
-            # Color MRI exports may fail "near-gray" checks. Try grayscale fallback first.
-            image_gray3 = to_grayscale_3ch(image)
-            if is_brain_mri_image(image_gray3):
-                image = image_gray3
-            else:
-                # Keep dashboard "prediction probability" consistent for invalid uploads.
-                request.session['last_prediction_probability'] = 0
-                request.session['last_prediction_result'] = 'Invalid Image'
-                request.session['last_prediction_status'] = 'invalid'
-                request.session['last_uploaded_file_url'] = uploaded_file_url
-                request.session.modified = True
+            # Keep dashboard "prediction probability" consistent for invalid uploads.
+            request.session['last_prediction_probability'] = 0
+            request.session['last_prediction_result'] = 'Invalid Image'
+            request.session['last_prediction_status'] = 'invalid'
+            request.session['last_uploaded_file_url'] = uploaded_file_url
+            request.session.modified = True
 
-                return render(request, 'Users/UserPredict.html', {
-                    'result': 'Invalid Image',
-                    'prediction_probability': 0,
-                    'tumor_probability': 0,
-                    'non_tumor_probability': 0,
-                    'status': 'invalid',
-                    'uploaded_file_url': uploaded_file_url,
-                    'model_accuracy': 'N/A',
-                    'invalid_message': 'The uploaded image does not appear to be a Brain MRI scan. Please upload a valid Brain MRI image.',
-                })
+            return render(request, 'Users/UserPredict.html', {
+                'result': 'Invalid Image',
+                'prediction_probability': 0,
+                'tumor_probability': 0,
+                'non_tumor_probability': 0,
+                'status': 'invalid',
+                'uploaded_file_url': uploaded_file_url,
+                'model_accuracy': 'N/A',
+                'invalid_message': 'The uploaded image does not appear to be a Brain MRI scan. Please upload a valid Brain MRI image.',
+            })
         # ─────────────────────────────────────────────────────────────────────
 
         class CNN(nn.Module):
@@ -492,6 +509,9 @@ def predict(request):
     return render(request, 'Users/UserPredict.html')
 
 def performance(request):
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+
     perf_dir = os.path.join(settings.BASE_DIR, 'Assets', 'Static', 'Performance')
     os.makedirs(perf_dir, exist_ok=True)
 
