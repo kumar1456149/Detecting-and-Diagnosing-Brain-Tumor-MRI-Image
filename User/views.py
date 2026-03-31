@@ -442,7 +442,7 @@ def predict(request):
                 return x
 
         model = CNN()
-        model.load_state_dict(torch.load(os.path.join(settings.MEDIA_ROOT, 'weights', 'model.pt')))
+        model.load_state_dict(torch.load(os.path.join(settings.MEDIA_ROOT, 'weights', 'model.pt'), map_location=torch.device('cpu')))
         model.eval()
 
         image_resized = cv2.resize(image, (128, 128))
