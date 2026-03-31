@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-wa7ghuntm30^@4-0imff)&#+@n*%!_i29_r!m6+azr7!%w8$st
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['detecting-and-diagnosing-brain-tumor-mri.onrender.com', 'localhost', '127.0.0.1', '*']
 
 
 # Application definition
